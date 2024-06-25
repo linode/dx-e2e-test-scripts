@@ -61,6 +61,6 @@
 
     - name: Write firewall ID to configuration file
       lineinfile:
-        path: "../tests/integration/integration_config.yml"
+        path: "../../../../tests/integration/integration_config.yml"
         line: "firewall_id: {{ firewall_id }}"
         insertafter: EOF
