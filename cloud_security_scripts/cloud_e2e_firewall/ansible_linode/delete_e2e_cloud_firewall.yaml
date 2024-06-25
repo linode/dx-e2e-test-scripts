@@ -8,7 +8,7 @@
   tasks:
     - name: Read firewall ID from configuration file
       slurp:
-        src: "../tests/integration/integration_config.yml"
+        src: "../../../../tests/integration/integration_config.yml"
       register: config_file
 
     - name: Set firewall_id fact from configuration file
