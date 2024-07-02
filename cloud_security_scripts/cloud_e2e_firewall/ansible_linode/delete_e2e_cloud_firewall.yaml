@@ -2,9 +2,6 @@
   hosts: localhost
   gather_facts: yes
 
-  vars:
-    linode_api_token: "{{ lookup('env', 'LINODE_TOKEN') | default(lookup('env', 'LINODE_API_TOKEN')) }}"
-
   tasks:
     - name: Read firewall ID from configuration file
       slurp:
@@ -34,3 +31,9 @@
     - name: Display Deletion Info
       debug:
         var: delete_firewall
+
+  environment:
+    LINODE_API_TOKEN: "{{ lookup('env', 'LINODE_TOKEN') | default(lookup('env', 'LINODE_API_TOKEN')) }}"
+    LINODE_API_URL: "{{ lookup('env', 'TEST_API_URL', default='https://api.linode.com/') }}"
+    LINODE_API_VERSION: "{{ lookup('env', 'TEST_API_VERSION', default='v4beta') }}"
+    LINODE_CA: "{{ lookup('env', 'TEST_API_CA') }}"
