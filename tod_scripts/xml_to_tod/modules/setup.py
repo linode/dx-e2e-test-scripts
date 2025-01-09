@@ -6,6 +6,7 @@ checking if required environment variables are set, and verifying the installati
 import os
 import subprocess
 import sys
+import hvac
 
 from dotenv import load_dotenv
 
@@ -18,6 +19,21 @@ def load_environment_variables():
     load_dotenv(dotenv_path=dotenv_path)
 
 
+def get_secret_from_vault(secret_path):
+    """Retrieve secret from Vault."""
+    vault_client = hvac.Client(
+        url=os.getenv("VAULT_ADDR", "http://127.0.0.1:8200"),
+        token=os.getenv("VAULT_TOKEN")
+    )
+
+    try:
+        response = vault_client.secrets.kv.read_secret_version(path=secret_path)
+        return response['data']['data']
+    except hvac.exceptions.InvalidPath as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+
+
 def check_required_env_vars():
     """Check if required environment variables are set."""
     required_env_vars = [
@@ -28,6 +44,18 @@ def check_required_env_vars():
         "BUCKET",
         "URL",
     ]
+
+    # Retrieve secrets from Vault if not set
+    if not os.getenv("LINODE_CLI_TOKEN"):
+        vault_secret_path = "dx-team"
+
+        print("Fetching secrets from Vault...")
+        secrets = get_secret_from_vault(secret_path=vault_secret_path)
+        os.environ["LINODE_CLI_TOKEN"] = secrets["LINODE_CLI_TOKEN"]
+        os.environ["LINODE_CLI_OBJ_ACCESS_KEY"] = secrets["LINODE_CLI_OBJ_ACCESS_KEY"]
+        os.environ["LINODE_CLI_OBJ_SECRET_KEY"] = secrets["LINODE_CLI_OBJ_SECRET_KEY"]
+
+    # Check if the environment variables are set
     missing_vars = [var for var in required_env_vars if var not in os.environ]
 
     if missing_vars:
