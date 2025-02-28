@@ -2,6 +2,8 @@
 
 RETRIES=3
 DELAY=30
+# Path to the binary installation script
+INSTALL_SCRIPT_PATH="./install_requirements.sh"
 
 # Function to retry a command with exponential backoff
 retry_command() {
@@ -19,6 +21,34 @@ retry_command() {
         wait_time=$((wait_time * 2))
     done
 }
+
+check_linode_token() {
+    if [ -z "$LINODE_TOKEN" ]; then
+        echo "Error: LINODE_TOKEN is not set. Please export it and try again."
+        exit 1
+    fi
+}
+
+# Function to check if binaries are available, if not, call the installation script
+check_and_install_binaries() {
+    if ! command -v kubectl &> /dev/null || ! command -v calicoctl &> /dev/null; then
+        echo "kubectl or calicoctl not found. Running the installation script..."
+        if [ -x "$INSTALL_SCRIPT_PATH" ]; then
+            $INSTALL_SCRIPT_PATH
+        else
+            echo "Error: Installation script $INSTALL_SCRIPT_PATH not found or not executable."
+            exit 1
+        fi
+    else
+        echo "kubectl and calicoctl are already installed."
+    fi
+}
+
+# Check if LINODE_TOKEN is set before proceeding
+check_linode_token
+
+# Check and install required binaries before proceeding
+check_and_install_binaries
 
 # Fetch the list of LKE cluster IDs
 CLUSTER_IDS=$(curl -s -H "Authorization: Bearer $LINODE_TOKEN" \
