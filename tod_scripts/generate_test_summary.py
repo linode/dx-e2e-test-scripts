@@ -68,10 +68,4 @@ if __name__ == "__main__":
     xml_file = sys.argv[1]
     result_summary = parse_junit_xml(xml_file)
 
-    # Save output to GitHub Actions environment variable
-    github_env = os.getenv("GITHUB_ENV")
-    if github_env:
-        with open(github_env, "a") as env_file:
-            env_file.write(f"TEST_SUMMARY<<EOF\\n{result_summary}\\nEOF\\n")
-
     print(result_summary)
