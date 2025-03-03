@@ -33,7 +33,7 @@ def parse_junit_xml(xml_file):
 
         # Extract failure details
         if failure is not None and failure.text:
-            failures.append(f"• `{name}`\n```{failure.text.strip().splitlines()[-1]}```")
+            failures.append(f"• `{name}`\\n```{failure.text.strip().splitlines()[-1]}```")
 
         # Extract error details (fallback to system-out if error is missing)
         error_text = None
@@ -43,24 +43,20 @@ def parse_junit_xml(xml_file):
             error_text = system_out.text.strip()
 
         if error_text:
-            errors.append(f"• `{name}`\n```{error_text.splitlines()[-1]}```")
+            errors.append(f"• `{name}`\\n```{error_text.splitlines()[-1]}```")
 
     # Summary
     summary = f"""
 *Test Summary*
-:white_check_mark: *Passed:* {passed_tests}
-:x: *Failed:* {total_failures}
-:warning: *Errors:* {total_errors}
-:fast_forward: *Skipped:* {total_skipped}
-*Total:* {total_tests}
+:white_check_mark: *Passed:* {passed_tests}\\n:x: *Failed:* {total_failures}\\n:warning: *Errors:* {total_errors}\\n:fast_forward: *Skipped:* {total_skipped}\\n*Total:* {total_tests}
 """
 
     # Detailed Failures & Errors
     if failures:
-        summary += "\n:x: *Test Failures:*\n" + "\n".join(failures) + "\n"
+        summary += "\\n:x: *Test Failures:*\\n" + "\\n".join(failures) + "\\n"
 
     if errors:
-        summary += "\n:warning: *Test Errors:*\n" + "\n".join(errors) + "\n"
+        summary += "\\n:warning: *Test Errors:*\\n" + "\\n".join(errors) + "\\n"
 
     return summary.strip()
 
@@ -77,6 +73,6 @@ if __name__ == "__main__":
     github_env = os.getenv("GITHUB_ENV")
     if github_env:
         with open(github_env, "a") as env_file:
-            env_file.write(f"TEST_SUMMARY<<EOF\n{result_summary}\nEOF\n")
+            env_file.write(f"TEST_SUMMARY<<EOF\\n{result_summary}\\nEOF\\n")
 
     print(result_summary)
