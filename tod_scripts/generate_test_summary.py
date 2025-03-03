@@ -47,8 +47,7 @@ def parse_junit_xml(xml_file):
 
     # Summary
     summary = f"""
-*Test Summary*
-:white_check_mark: *Passed:* {passed_tests}\\n:x: *Failed:* {total_failures}\\n:warning: *Errors:* {total_errors}\\n:fast_forward: *Skipped:* {total_skipped}\\n*Total:* {total_tests}
+*Test Summary*\\n:white_check_mark: Passed: {passed_tests} :x: Failed: {total_failures} :warning: Errors: {total_errors} :fast_forward: Skipped: {total_skipped} :scroll: Total: {total_tests}\\n
 """
 
     # Detailed Failures & Errors
