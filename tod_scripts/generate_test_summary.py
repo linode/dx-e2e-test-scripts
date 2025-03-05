@@ -29,20 +29,22 @@ def parse_junit_xml(xml_file):
 
         failure = testcase.find("failure")
         error = testcase.find("error")
-        system_out = testcase.find("system-out")  # Fallback log output
+        # system_out = testcase.find("system-out")  # Fallback log output
 
         # Extract failure details
-        if failure is not None and failure.text:
+        if failure is not None:
             failures.append(f"• `{name}`")
 
         # Extract error details (fallback to system-out if error is missing)
-        error_text = None
-        if error is not None and error.text:
-            error_text = error.text.strip()
-        elif system_out is not None and system_out.text:
-            error_text = system_out.text.strip()
-
-        if error_text:
+        # error_text = None
+        # if error is not None:
+        #     error_text = error.text.strip()
+        # elif system_out is not None and system_out.text:
+        #     error_text = system_out.text.strip()
+        #
+        # if error_text:
+        #     errors.append(f"• `{name}`")
+        if error is not None:
             errors.append(f"• `{name}`")
 
     # Summary
