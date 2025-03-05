@@ -33,7 +33,7 @@ def parse_junit_xml(xml_file):
 
         # Extract failure details
         if failure is not None and failure.text:
-            failures.append(f"• `{name}`\\n```{failure.text.strip().splitlines()[-1]}```")
+            failures.append(f"• `{name}`")
 
         # Extract error details (fallback to system-out if error is missing)
         error_text = None
@@ -43,7 +43,7 @@ def parse_junit_xml(xml_file):
             error_text = system_out.text.strip()
 
         if error_text:
-            errors.append(f"• `{name}`\\n```{error_text.splitlines()[-1]}```")
+            errors.append(f"• `{name}`")
 
     # Summary
     summary = f"""
