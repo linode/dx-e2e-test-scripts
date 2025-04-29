@@ -6,6 +6,8 @@ from botocore.exceptions import NoCredentialsError
 
 ACCESS_KEY = os.environ.get("LINODE_CLI_OBJ_ACCESS_KEY")
 SECRET_KEY = os.environ.get("LINODE_CLI_OBJ_SECRET_KEY")
+os.environ["AWS_REQUEST_CHECKSUM_CALCULATION"] = "when_required"
+os.environ["AWS_RESPONSE_CHECKSUM_VALIDATION"] = "when_required"
 BUCKET_NAME = "dx-test-results"
 
 linode_obj_config = {
