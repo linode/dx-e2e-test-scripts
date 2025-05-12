@@ -65,7 +65,7 @@
         insertafter: EOF
 
   environment:
-    LINODE_API_TOKEN: "{{ lookup('env', 'LINODE_TOKEN') | default(lookup('env', 'LINODE_API_TOKEN'), true) }}"
-    LINODE_API_URL: "{{ lookup('env', 'TEST_API_URL', default='https://api.linode.com') | regex_replace('/?$', '/') }}"
-    LINODE_API_VERSION: "{{ lookup('env', 'TEST_API_VERSION', default='v4beta') }}"
-    LINODE_CA: "{{ lookup('env', 'TEST_API_CA') }}"
+    LINODE_API_TOKEN: "{{ lookup('env', 'LINODE_API_TOKEN') or lookup('env', 'LINODE_TOKEN') }}"
+    LINODE_API_URL: "{{ (lookup('env', 'LINODE_API_URL') or lookup('env', 'TEST_API_URL') or 'https://api.linode.com/') | regex_replace('/?$', '/') }}"
+    LINODE_API_VERSION: "{{ lookup('env', 'LINODE_API_VERSION') or lookup('env', 'TEST_API_VERSION') or 'v4beta' }}"
+    LINODE_CA: "{{ lookup('env', 'LINODE_CA') or lookup('env', 'TEST_API_CA') }}"
