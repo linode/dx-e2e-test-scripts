@@ -79,4 +79,5 @@ def execute_command(args):
         return process
     except subprocess.CalledProcessError as e:
         print(f"Error executing command with args: {args}, with error: {e}")
+        print(e.stderr.decode())
         raise  # Re-raise the exception to indicate failure

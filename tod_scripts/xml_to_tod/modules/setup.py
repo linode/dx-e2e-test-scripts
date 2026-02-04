@@ -47,7 +47,7 @@ def check_required_env_vars():
 
     # Retrieve secrets from Vault if not set
     if not os.getenv("LINODE_CLI_TOKEN"):
-        vault_secret_path = "dx-team"
+        vault_secret_path = "dx"
 
         print("Fetching secrets from Vault...")
         secrets = get_secret_from_vault(secret_path=vault_secret_path)
