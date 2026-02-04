@@ -194,6 +194,14 @@ def download_and_upload_xml_files(cluster, bucket, url):
             data_json = json.dumps(data)
 
             response = upload_encoded_xml_file(url, data_json, headers)
+            print(f"Response: {response}")
+
+            if response is None:
+                log_and_print(
+                    f"{timestamp}: Upload failed for {file}. No response returned.",
+                    level=logging.ERROR,
+                )
+                continue
 
             if response.status_code == 201:
                 log_and_print(f"{timestamp}: {file} uploaded to TOD successfully.")
